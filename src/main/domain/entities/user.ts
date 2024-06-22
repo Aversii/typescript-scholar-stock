@@ -1,3 +1,5 @@
+import { UserValidator } from "../validations/userValidations";
+
 export type UserProps = {
     id: string,
     name:string,
@@ -9,6 +11,9 @@ export class User {
     private constructor(private props:UserProps){}
 
     public static create(name:string, email:string, password:string){
+        UserValidator.validateName(name);
+        UserValidator.validateEmail(email);
+        UserValidator.validatePassword(password);
         return new User({
             id: crypto.randomUUID().toString(),
             name,
