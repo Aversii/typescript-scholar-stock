@@ -1,6 +1,6 @@
-import { User } from "../../domain/entities/user";
-import { UseCase } from "../gateway/useCaseGateway";
-import { UserGateway } from "./../../domain/gateway/userGateway";
+import { User } from "../../../domain/entities/user";
+import { UserGateway } from "../../../domain/gateway/userGateway";
+import { UseCase } from "../../gateway/useCaseGateway";
 
 export type CreateUserInputDto = {
   name: string;
