@@ -9,6 +9,8 @@ import { ListUserRoute } from "./infra/api/express/routes/user/listUsers.express
 import { UserRepositoryPrisma } from "./infra/repo/user.repo.prisma";
 import { prismaClient } from "./package/prisma/prisma";
 import { DeleteUserRoute } from './infra/api/express/routes/user/deleteUser.express.route';
+import { UpdateUserUseCase } from './application/useCases/user/update';
+import { UpdateUserRoute } from "./infra/api/express/routes/user/updateUser.express.route";
 
 function main() {
   const repository = UserRepositoryPrisma.create(prismaClient);
@@ -17,13 +19,15 @@ function main() {
   const listUserUseCase = ListUserUseCase.create(repository)
   const listByIdUserUseCase = ListByIdUserUseCase.create(repository)
   const deleteUserUseCase = DeleteUserUseCase.create(repository) 
+  const updateUserUseCase = UpdateUserUseCase.create(repository)
 
   const createRoute = CreateUserRoute.create(createUserUseCase);
   const listRoute = ListUserRoute.list(listUserUseCase)
   const listByIdRoute = ListByIdUserRoute.listById(listByIdUserUseCase)
   const deleteRoute = DeleteUserRoute.deleteUser(deleteUserUseCase)
+  const updateRoute = UpdateUserRoute.update(updateUserUseCase)
 
-  const api = ApiExpress.create([createRoute,listRoute,listByIdRoute,deleteRoute]);
+  const api = ApiExpress.create([createRoute,listRoute,listByIdRoute,deleteRoute,updateRoute]);
   const port = 8000;
   api.start(port);
 }
