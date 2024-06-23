@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { UserGateway } from "../../domain/gateway/userGateway";
 import { User } from "../../domain/entities/user";
+import { NotFound_IdNotFound } from "../../error/customError";
+import { UserValidator } from './../../domain/validations/userValidations';
 
 export class UserRepositoryPrisma implements UserGateway {
   private constructor(private readonly prismaClient: PrismaClient) {}
@@ -42,7 +44,7 @@ export class UserRepositoryPrisma implements UserGateway {
     });
 
     if (!user) {
-      throw new Error(`User with id ${id} not found`);
+      throw new NotFound_IdNotFound();
     }
 
     return User.with({
@@ -59,7 +61,7 @@ export class UserRepositoryPrisma implements UserGateway {
     });
 
     if (!user) {
-      throw new Error(`User with id ${id} not found`);
+      throw new NotFound_IdNotFound();
     }
 
     await this.prismaClient.user.delete({
@@ -71,9 +73,10 @@ public async update( updatedData: {id: string, name?: string; email?: string; pa
   const user = await this.prismaClient.user.findUnique({
     where: { id: updatedData.id },
   });
+  
 
   if (!user) {
-    throw new Error(`User with id ${updatedData.id} not found`);
+    throw new NotFound_IdNotFound();
   }
 
   const updatedUser = await this.prismaClient.user.update({

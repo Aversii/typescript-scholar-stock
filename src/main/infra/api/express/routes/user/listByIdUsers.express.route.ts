@@ -5,6 +5,7 @@ import {
   ListByIdUserOutputDto,
 } from "./../../../../../application/useCases/user/listById";
 import { HttpMethod, Route } from "../../route";
+import { CustomError } from "../../../../../error/customError";
 
 export type ListByIdResponseDTO = {
   id: string;
@@ -36,8 +37,12 @@ export class ListByIdUserRoute implements Route {
 
         const responseBody = this.present(output);
         response.status(200).json(responseBody).send();
-      } catch (error:any) {
-        response.status(400).json({"Error":error.message}).send();        
+      } catch (error) {
+        if (error instanceof CustomError) {
+          response.status(error.statusCode).json({ "Error": error.message });
+        } else {
+          response.status(500).json({ "Error": "Internal Server Error" });
+        }
       }
     };
   }

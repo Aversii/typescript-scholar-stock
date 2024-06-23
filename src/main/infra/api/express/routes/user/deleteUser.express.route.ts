@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { DeleteUserInputDto, DeleteUserUseCase } from "../../../../../application/useCases/user/delete";
 import { HttpMethod, Route } from "../../route";
+import { CustomError } from "../../../../../error/customError";
 
 export class DeleteUserRoute implements Route {
   private constructor(
@@ -28,8 +29,12 @@ export class DeleteUserRoute implements Route {
   
         await this.deleteUserService.execute(input);
         response.status(204).send();
-      } catch (error:any) {
-        response.status(400).json({"Error":error.message}).send();        
+      } catch (error) {
+        if (error instanceof CustomError) {
+          response.status(error.statusCode).json({ "Error": error.message });
+        } else {
+          response.status(500).json({ "Error": "Internal Server Error" });
+        }
       }
     };
   }

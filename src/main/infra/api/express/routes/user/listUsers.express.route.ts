@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ListUserOutputDto, ListUserUseCase } from "../../../../../application/useCases/user/list";
 import { HttpMethod, Route } from "../../route";
+import { CustomError } from "../../../../../error/customError";
 
 export type ListUserResponseDTO = {
   users: { id: string; name: string; email: string;}[];
@@ -27,11 +28,14 @@ export class ListUserRoute implements Route {
         const output = await this.listUserService.execute();  
         const responseBody = this.present(output);
         response.status(200).json(responseBody).send();        
-      } catch (error:any) {
-        response.status(400).json({"Error":error.message}).send();        
+      } catch (error) {
+        if (error instanceof CustomError) {
+          response.status(error.statusCode).json({ "Error": error.message });
+        } else {
+          response.status(500).json({ "Error": "Internal Server Error" });
+        }
       }
     };
-    
   }
 
   private present(input: ListUserOutputDto): ListUserResponseDTO {

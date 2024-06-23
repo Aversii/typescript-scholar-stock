@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { UpdateUserInputDto, UpdateUserUseCase } from "../../../../../application/useCases/user/update";
 import { HttpMethod, Route } from "../../route";
 import { UserValidator } from "../../../../../domain/validations/userValidations";
+import { CustomError } from "../../../../../error/customError";
 
 export type UpdateUserResponseDTO = {
   message: string;
@@ -40,8 +41,12 @@ export class UpdateUserRoute implements Route {
 
         const responseBody = this.present(output);
         response.status(200).json(responseBody).send();
-      } catch (error: any) {
-        response.status(400).json({ "Error": error.message }).send();
+    } catch (error) {
+        if (error instanceof CustomError) {
+          response.status(error.statusCode).json({ "Error": error.message });
+        } else {
+          response.status(500).json({ "Error": "Internal Server Error" });
+        }
       }
     };
   }
