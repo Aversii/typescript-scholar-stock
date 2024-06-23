@@ -42,7 +42,7 @@ export class UserRepositoryPrisma implements UserGateway {
     });
 
     if (!user) {
-      throw new Error(`Product with id ${id} not found`);
+      throw new Error(`User with id ${id} not found`);
     }
 
     return User.with({
@@ -66,4 +66,24 @@ export class UserRepositoryPrisma implements UserGateway {
       where: { id: id },
     });
   }
+  
+public async update( updatedData: {id: string, name?: string; email?: string; password?: string }): Promise<void> {
+  const user = await this.prismaClient.user.findUnique({
+    where: { id: updatedData.id },
+  });
+
+  if (!user) {
+    throw new Error(`User with id ${updatedData.id} not found`);
+  }
+
+  const updatedUser = await this.prismaClient.user.update({
+    where: { id: updatedData.id },
+    data: {
+      name: updatedData.name || user.name,
+      email: updatedData.email || user.email,
+      password: updatedData.password || user.password,
+    },
+  });
+}
+
 }
