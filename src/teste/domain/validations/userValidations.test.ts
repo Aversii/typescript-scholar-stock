@@ -3,7 +3,7 @@ import { UserValidator } from "../../../main/domain/validations/userValidations"
 describe("UserValidator", () => {
     describe("validateName", () => {
         it("should throw an error if name is empty", () => {
-            expect(() => UserValidator.validateName("")).toThrow("Name cannot be empty.");
+            expect(() => UserValidator.validateName("")).toThrow("Name can't be blank or empty.");
         });
 
         it("should throw an error if name is less than 3 characters", () => {

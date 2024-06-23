@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CreateUserInputDto, CreateUserUseCase } from "../../../../../application/useCases/user/create";
 import { HttpMethod, Route } from "../../route";
+import { CustomError } from "../../../../../error/customError";
 
 export type CreateUserResponseDTO = {
   message: string;
@@ -32,8 +33,12 @@ export class CreateUserRoute implements Route {
 
         const responseBody = this.present(output);
         response.status(201).json(responseBody).send();
-      } catch (error:any) {
-        response.status(400).json({"Error":error.message}).send();        
+      } catch (error) {
+        if (error instanceof CustomError) {
+          response.status(error.statusCode).json({ "Error": error.message });
+        } else {
+          response.status(500).json({ "Error": "Internal Server Error" });
+        }
       }
     };
   }
