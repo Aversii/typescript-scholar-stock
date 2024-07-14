@@ -5,6 +5,7 @@ import { CustomError } from "../../../../../error/customError";
 
 export type CreateUserResponseDTO = {
   message: string;
+  token: string;
 };
 
 export class CreateUserRoute implements Route {
@@ -28,12 +29,14 @@ export class CreateUserRoute implements Route {
           email,
           password,
         };
+
         const output: CreateUserResponseDTO =
           await this.createUserService.execute(input);
 
         const responseBody = this.present(output);
-        response.status(201).json(responseBody).send();
+        response.status(201).json(responseBody);
       } catch (error) {
+        console.error(error);  // Adicionando log de erro
         if (error instanceof CustomError) {
           response.status(error.statusCode).json({ "Error": error.message });
         } else {
@@ -44,8 +47,7 @@ export class CreateUserRoute implements Route {
   }
 
   private present(input: CreateUserResponseDTO): CreateUserResponseDTO {
-    const response = { message: input.message };
-    return response;
+    return { message: input.message, token: input.token };
   }
 
   public getPath(): string {
