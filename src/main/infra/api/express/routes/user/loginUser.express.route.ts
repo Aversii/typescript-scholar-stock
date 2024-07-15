@@ -37,7 +37,6 @@ export class LoginUserRoute implements Route {
         const responseBody = this.present(output);
         response.status(200).json(responseBody);
       } catch (error) {
-        console.error(error);
         if (error instanceof CustomError) {
           response.status(error.statusCode).json({ Error: error.message });
         } else {

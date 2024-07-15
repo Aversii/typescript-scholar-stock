@@ -1,4 +1,5 @@
 import { UserGateway } from "../../../domain/gateway/userGateway";
+import { UserValidator } from "../../../domain/validations/userValidations";
 import { UseCase } from "../../gateway/useCaseGateway";
 
 export type UpdateUserInputDto = {
@@ -21,14 +22,12 @@ export class UpdateUserUseCase
     return new UpdateUserUseCase(userGateway);
   }
 
-  public async execute({
-    id,
-    name,
-    email,
-    password,
-  }: UpdateUserInputDto): Promise<UpdateUserOutputDto> {
-    const user = await this.userGateway.listById(id);
+  public async execute({id,name,email,password}: UpdateUserInputDto): Promise<UpdateUserOutputDto> {
+    email && UserValidator.validateEmail(email);
+    name && UserValidator.validateName(name);
+    password && UserValidator.validatePassword(password);
 
+    await this.userGateway.listById(id);
     await this.userGateway.update({ id, name, email, password });
 
     const output = this.presentOutput("User updated successfully");

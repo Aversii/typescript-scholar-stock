@@ -62,10 +62,6 @@ export class UserRepositoryPrisma implements UserGateway {
       where: { id: id },
     });
 
-    if (!user) {
-      throw new NotFound_IdNotFound();
-    }
-
     await this.prismaClient.user.delete({
       where: { id: id },
     });
@@ -81,16 +77,13 @@ export class UserRepositoryPrisma implements UserGateway {
       where: { id: updatedData.id },
     });
 
-    if (!user) {
-      throw new NotFound_IdNotFound();
-    }
 
     const updatedUser = await this.prismaClient.user.update({
       where: { id: updatedData.id },
       data: {
-        name: updatedData.name || user.name,
-        email: updatedData.email || user.email,
-        password: updatedData.password || user.password,
+        name: updatedData.name || user?.name,
+        email: updatedData.email || user?.email,
+        password: updatedData.password || user?.password,
       },
     });
   }
