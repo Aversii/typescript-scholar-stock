@@ -4,9 +4,7 @@ import { User } from "../../domain/entities/user";
 import {
   NotFound_EmailNotFound,
   NotFound_IdNotFound,
-  Unauthorized_PasswordMismatch,
 } from "../../error/customError";
-import { UserValidator } from "./../../domain/validations/userValidations";
 
 export class UserRepositoryPrisma implements UserGateway {
   private constructor(private readonly prismaClient: PrismaClient) {}
@@ -97,7 +95,6 @@ export class UserRepositoryPrisma implements UserGateway {
     });
   }
 
-
   public async login(email: string, password: string): Promise<User | null> {
     const user = await this.prismaClient.user.findFirst({
       where: { email: email },
@@ -107,14 +104,10 @@ export class UserRepositoryPrisma implements UserGateway {
       throw new NotFound_EmailNotFound();
     }
 
-    if (user.password !== password) {
-      throw new Unauthorized_PasswordMismatch();
-    }
-
     return User.with({
       id: user.id,
       name: user.name,
-      email: user.email,
+      email: user.email ,
       password: user.password,
     });
   }

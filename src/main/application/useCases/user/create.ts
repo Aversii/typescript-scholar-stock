@@ -1,5 +1,6 @@
 import { User } from "../../../domain/entities/user";
 import { UserGateway } from "../../../domain/gateway/userGateway";
+import hashManager from "../../../infra/service/hashManager/hashManager";
 import Authenticator from "../../../infra/service/jwtAuth/authenticator";
 import { UseCase } from "../../gateway/useCaseGateway";
 
@@ -23,7 +24,9 @@ export class CreateUserUseCase implements UseCase<CreateUserInputDto, CreateUser
   }
 
   public async execute({name,email,password}: CreateUserInputDto): Promise<CreateUserOutputDto> {
-    const user = User.create(name,email,password)
+    const hash = await hashManager.generateHash(password)
+    
+    const user = User.create(name,email,hash)
     await this.userGateway.save(user)
     const token = Authenticator.generateToken({id: user.getId()})
     
