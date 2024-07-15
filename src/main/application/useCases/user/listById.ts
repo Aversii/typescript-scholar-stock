@@ -1,10 +1,12 @@
 import { User } from "../../../domain/entities/user";
 import { UserGateway } from "../../../domain/gateway/userGateway";
+import authenticator from "../../../infra/service/jwtAuth/authenticator";
 import { UseCase } from "../../gateway/useCaseGateway";
 
 
 export type ListByIdUserInputDto = {
-    id:string
+    id:string;
+    token:string;
 }
 
 export type ListByIdUserOutputDto = {
@@ -16,13 +18,14 @@ export type ListByIdUserOutputDto = {
 export class ListByIdUserUseCase
   implements UseCase<ListByIdUserInputDto, ListByIdUserOutputDto>
 {
-  private constructor(private readonly productGateway: UserGateway) {}
-  public static create(productGateway: UserGateway) {
-    return new ListByIdUserUseCase(productGateway);
+  private constructor(private readonly userGateway: UserGateway) {}
+  public static create(userGateway: UserGateway) {
+    return new ListByIdUserUseCase(userGateway);
   }
 
   public async execute(input: ListByIdUserInputDto): Promise<ListByIdUserOutputDto> {
-    const aUser = await this.productGateway.listById(input.id);  
+    const tokenData = authenticator.getTokenData(input.token)
+    const aUser = await this.userGateway.listById(input.id);  
     const output = this.presentOutput(aUser);
     return output;
   }

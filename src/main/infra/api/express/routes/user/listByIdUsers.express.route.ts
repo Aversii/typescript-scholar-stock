@@ -31,8 +31,9 @@ export class ListByIdUserRoute implements Route {
   public getHandler() {
     return async (request: Request, response: Response) => {
       try {
+        const token = request.headers.authorization as string
         const { id } = request.params;
-        const input: ListByIdUserInputDto = { id };
+        const input: ListByIdUserInputDto = { id,token };
         const output = await this.getUserByIdService.execute(input);
 
         const responseBody = this.present(output);

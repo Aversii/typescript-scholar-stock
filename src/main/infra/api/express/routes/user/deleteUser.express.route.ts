@@ -25,7 +25,9 @@ export class DeleteUserRoute implements Route {
       try {
         
         const id = request.params.id;
-        const input: DeleteUserInputDto = { id };
+        const token = request.headers.authorization as string
+        const input: DeleteUserInputDto = { id,token };
+
   
         await this.deleteUserService.execute(input);
         response.status(204).send();

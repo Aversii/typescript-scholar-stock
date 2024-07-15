@@ -1,15 +1,19 @@
 import { User } from "../../../domain/entities/user";
 import { UserGateway } from "../../../domain/gateway/userGateway";
+import { InvalidRequest_ShortPassword } from "../../../error/customError";
+import authenticator from "../../../infra/service/jwtAuth/authenticator";
 import { UseCase } from "../../gateway/useCaseGateway";
 
-export type ListUserInputDto = void;
+export type ListUserInputDto = {
+  token:string
+};
 
 export type ListUserOutputDto = {
   users: {
     id: string;
     name: string;
     email: string;
-  }[];
+  }[],
 };
 
 export class ListUserUseCase
@@ -20,7 +24,12 @@ export class ListUserUseCase
     return new ListUserUseCase(userGateway);
   }
 
-  public async execute(): Promise<ListUserOutputDto> {
+  public async execute(tk:ListUserInputDto): Promise<ListUserOutputDto> {
+    const tokenData = authenticator.getTokenData(tk.token)
+          if(!tokenData){
+        throw new InvalidRequest_ShortPassword()
+      }
+
     const aUser = await this.userGateway.list();
     const output = this.presentOutput(aUser);
     return output;

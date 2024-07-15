@@ -25,7 +25,9 @@ export class ListUserRoute implements Route {
   public getHandler() {
     return async (request: Request, response: Response) => {
       try {
-        const output = await this.listUserService.execute();  
+        const token = request.headers.authorization as string
+
+        const output = await this.listUserService.execute({token});  
         const responseBody = this.present(output);
         response.status(200).json(responseBody).send();        
       } catch (error) {
