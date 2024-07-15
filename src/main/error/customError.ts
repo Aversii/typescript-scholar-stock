@@ -33,3 +33,15 @@ export class NotFound_IdNotFound extends CustomError{
         super(404,"ID not found.");
     };;
 }
+
+export class NotFound_EmailNotFound extends CustomError{ 
+    constructor(){
+        super(404,"Email not found.");
+    };;
+}
+
+export class Unauthorized_PasswordMismatch extends CustomError{ 
+    constructor(){
+        super(401,"Password Mismatch");
+    };;
+}

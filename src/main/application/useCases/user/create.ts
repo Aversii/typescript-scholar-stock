@@ -1,6 +1,6 @@
 import { User } from "../../../domain/entities/user";
 import { UserGateway } from "../../../domain/gateway/userGateway";
-import Authenticator from "../../../infra/service/jwtAuth/Authenticator";
+import Authenticator from "../../../infra/service/jwtAuth/authenticator";
 import { UseCase } from "../../gateway/useCaseGateway";
 
 export type CreateUserInputDto = {
@@ -26,7 +26,6 @@ export class CreateUserUseCase implements UseCase<CreateUserInputDto, CreateUser
     const user = User.create(name,email,password)
     await this.userGateway.save(user)
     const token = Authenticator.generateToken({id: user.getId()})
-    console.log(token,"eeeu")
     
     const output = this.presentOutput("User created sucessfully",token);
     return output

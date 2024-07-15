@@ -6,5 +6,5 @@ export interface UserGateway {
     listById(id:string):Promise<User>
     delete(id:string):Promise<void>
     update(updatedData: { id: string; name?: string; email?: string; password?: string }): Promise<void>;
- // login(email:string, password:string):Promise<void>
+    login(email: string, password: string): Promise<User | null>;
 }

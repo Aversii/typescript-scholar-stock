@@ -6,7 +6,8 @@ const userGatewayMock: jest.Mocked<UserGateway> = {
     list: jest.fn(),
     listById: jest.fn(),
     delete: jest.fn(),
-    update:jest.fn()
+    update:jest.fn(),
+    login:jest.fn()
 };
 
 jest.mock("../../../main/domain/gateway/userGateway", () => ({
