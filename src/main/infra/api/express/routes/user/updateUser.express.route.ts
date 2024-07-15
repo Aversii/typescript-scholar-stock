@@ -23,6 +23,8 @@ export class UpdateUserRoute implements Route {
     return async (request: Request, response: Response) => {
       try {
         const { id } = request.params;
+        const token = request.headers.authorization as string
+
         const { name, email, password } = request.body;
 
         const input: UpdateUserInputDto = {
@@ -30,6 +32,7 @@ export class UpdateUserRoute implements Route {
           name,
           email,
           password,
+          token
         };
 
         const output: UpdateUserResponseDTO =

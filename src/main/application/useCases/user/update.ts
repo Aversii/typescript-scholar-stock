@@ -1,5 +1,6 @@
 import { UserGateway } from "../../../domain/gateway/userGateway";
 import { UserValidator } from "../../../domain/validations/userValidations";
+import authenticator from "../../../infra/service/jwtAuth/authenticator";
 import { UseCase } from "../../gateway/useCaseGateway";
 
 export type UpdateUserInputDto = {
@@ -7,6 +8,7 @@ export type UpdateUserInputDto = {
   name?: string;
   email?: string;
   password?: string;
+  token:string
 };
 
 export type UpdateUserOutputDto = {
@@ -22,7 +24,9 @@ export class UpdateUserUseCase
     return new UpdateUserUseCase(userGateway);
   }
 
-  public async execute({id,name,email,password}: UpdateUserInputDto): Promise<UpdateUserOutputDto> {
+  public async execute({id,name,email,password,token}: UpdateUserInputDto): Promise<UpdateUserOutputDto> {
+    const tokenData = authenticator.getTokenData(token)
+
     email && UserValidator.validateEmail(email);
     name && UserValidator.validateName(name);
     password && UserValidator.validatePassword(password);

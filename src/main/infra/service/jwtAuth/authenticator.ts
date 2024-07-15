@@ -1,4 +1,5 @@
 import * as jwt from "jsonwebtoken";
+import { InvalidRequest_InvalidToken, InvalidRequest_JWTIsMissing } from "../../../error/customError";
 
 class Authenticator {
   generateToken = (payload: object): string => {
@@ -19,16 +20,19 @@ class Authenticator {
   }
 
   getTokenData = (token: string): object => {
-    if (!process.env.JWT_KEY) {
-      throw new Error("JWT_KEY is not defined");
+    try {
+      if (!process.env.JWT_KEY) {
+        throw new InvalidRequest_JWTIsMissing();
+      }
+      if (!process.env.JWT_EXPIRES_IN) {
+        throw new Error("JWT_EXPIRES_IN is not defined");
+      }
+
+      const result = jwt.verify(token, process.env.JWT_KEY as string);
+      return result as object;
+    } catch (error) {
+      throw new InvalidRequest_InvalidToken();
     }
-
-    const result = jwt.verify(
-      token,
-      process.env.JWT_KEY as string
-    );
-
-    return result as object;
   }
 }
 

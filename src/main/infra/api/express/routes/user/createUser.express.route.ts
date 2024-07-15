@@ -16,7 +16,7 @@ export class CreateUserRoute implements Route {
   ) {}
 
   public static create(createUserService: CreateUserUseCase) {
-    return new CreateUserRoute("/users", HttpMethod.POST, createUserService);
+    return new CreateUserRoute("/signup", HttpMethod.POST, createUserService);
   }
 
   public getHandler() {

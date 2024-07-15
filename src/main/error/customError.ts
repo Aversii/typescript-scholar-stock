@@ -28,6 +28,20 @@ export class InvalidRequest_ShortPassword extends CustomError{
     };;
 }
 
+export class InvalidRequest_JWTIsMissing extends CustomError{ 
+    constructor(){
+        super(422,"Token is missing.");
+    };;
+}
+
+export class InvalidRequest_InvalidToken extends CustomError{ 
+    constructor(){
+        super(422,"Invalid Token.");
+    };;
+}
+
+
+
 export class NotFound_IdNotFound extends CustomError{ 
     constructor(){
         super(404,"ID not found.");
