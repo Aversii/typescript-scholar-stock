@@ -36,7 +36,6 @@ export class CreateUserRoute implements Route {
         const responseBody = this.present(output);
         response.status(201).json(responseBody);
       } catch (error) {
-        console.error(error);  // Adicionando log de erro
         if (error instanceof CustomError) {
           response.status(error.statusCode).json({ "Error": error.message });
         } else {

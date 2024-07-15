@@ -25,10 +25,6 @@ export class UpdateUserRoute implements Route {
         const { id } = request.params;
         const { name, email, password } = request.body;
 
-        UserValidator.validateEmail(email)
-        UserValidator.validateName(name)
-        UserValidator.validatePassword(password)
-
         const input: UpdateUserInputDto = {
           id,
           name,

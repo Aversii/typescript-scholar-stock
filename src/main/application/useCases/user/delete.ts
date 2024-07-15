@@ -13,7 +13,8 @@ export class DeleteUserUseCase implements UseCase<DeleteUserInputDto,DeleteUserO
     }
   
     public async execute(input: DeleteUserInputDto): Promise<DeleteUserOutputDto> {
-      const aUser = await this.userGateway.delete(input.id);  
+      await this.userGateway.listById(input.id);
+      await this.userGateway.delete(input.id);        
     }
 
 }
