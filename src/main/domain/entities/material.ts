@@ -3,17 +3,21 @@ export type MaterialProps = {
     name: string,
     quantity: number,
     unitMeasurement: string
+    authorId:string
+
 }
 
 export class Material {
     private constructor(private props: MaterialProps) {}
 
-    public static create(name: string, quantity: number, unitMeasurement: string) {
+    public static create(name: string, quantity: number, unitMeasurement: string,authorId:string) {
         return new Material({
             id: crypto.randomUUID().toString(),
             name,
             quantity,
-            unitMeasurement
+            unitMeasurement,
+            authorId
+
         });
     }
 
