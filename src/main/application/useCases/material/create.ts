@@ -1,7 +1,5 @@
 import { Material } from "../../../domain/entities/material";
 import { MaterialGateway } from "../../../domain/gateway/materialGateway";
-import hashManager from "../../../infra/service/hashManager/hashManager";
-import Authenticator from "../../../infra/service/jwtAuth/authenticator";
 import { UseCase } from "../../gateway/useCaseGateway";
 
 export type CreateMaterialInputDto = {
@@ -26,7 +24,6 @@ export class CreateMaterialUseCase implements UseCase<CreateMaterialInputDto, Cr
   }
 
   public async execute({name,quantity,unitMeasurement,authorId}: CreateMaterialInputDto): Promise<CreateMaterialOutputDto> {
-    
     const material = Material.create(name,quantity,unitMeasurement,authorId)
     await this.materialGateway.save(material)    
     const output = this.presentOutput("Material created sucessfully");

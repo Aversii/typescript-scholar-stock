@@ -41,6 +41,10 @@ export class Material {
         return this.props.unitMeasurement;
     }
 
+    public getAuthorId(): string {
+        return this.props.authorId;
+    }
+
     public setName(name: string): void {
         this.props.name = name;
     }
@@ -51,5 +55,9 @@ export class Material {
 
     public setUnitMeasurement(unitMeasurement: string): void {
         this.props.unitMeasurement = unitMeasurement;
+    }
+
+    public setAuthorId(authorId:string):void{
+        this.props.authorId = authorId
     }
 }

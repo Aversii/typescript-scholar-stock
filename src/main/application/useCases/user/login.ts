@@ -29,11 +29,13 @@ export class LoginUserUseCase implements UseCase<LoginUserInputDto, LoginUserOut
       if (!hashCompare) {
         throw new Unauthorized_PasswordMismatch();
       }
-    }
-    const token = Authenticator.generateToken({ id: user?.getId() });
+      const token = Authenticator.generateToken({ id: user.getId() });
+      const output = this.presentOutput("User Has Login", token);
+      return output;
+    }else{
+      throw new Error("User not found");    }
 
-    const output = this.presentOutput("User Has Login", token);
-    return output;
+
   }
 
   private presentOutput(message: string, token: string): LoginUserOutputDto {

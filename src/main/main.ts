@@ -13,9 +13,13 @@ import { UpdateUserRoute } from "./infra/api/express/routes/user/updateUser.expr
 import { LoginUserUseCase } from './application/useCases/user/login';
 import { LoginUserRoute } from "./infra/api/express/routes/user/loginUser.express.route";
 import { UserRepositoryPrisma } from "./infra/repo/user.repo.prisma";
+import { CreateMaterialUseCase } from "./application/useCases/material/create";
+import { MaterialRepositoryPrisma } from "./infra/repo/material.repo.prisma";
+import { CreateMaterialRoute } from "./infra/api/express/routes/material/createMaterial.express.route";
 
 function main() {
   const repository = UserRepositoryPrisma.create(prismaClient);
+  const materialRepo = MaterialRepositoryPrisma.create(prismaClient)
 
   const createUserUseCase = CreateUserUseCase.create(repository);
   const listUserUseCase = ListUserUseCase.create(repository)
@@ -23,6 +27,8 @@ function main() {
   const deleteUserUseCase = DeleteUserUseCase.create(repository) 
   const updateUserUseCase = UpdateUserUseCase.create(repository)
   const loginUserUseCase = LoginUserUseCase.login(repository)
+  
+  const createMaterialUseCase = CreateMaterialUseCase.create(materialRepo)
 
   const createRoute = CreateUserRoute.create(createUserUseCase);
   const listRoute = ListUserRoute.list(listUserUseCase)
@@ -31,7 +37,9 @@ function main() {
   const updateRoute = UpdateUserRoute.update(updateUserUseCase)
   const loginRoute = LoginUserRoute.login(loginUserUseCase)
 
-  const api = ApiExpress.create([createRoute,loginRoute,listRoute,listByIdRoute,deleteRoute,updateRoute]);
+  const createMaterialRoute = CreateMaterialRoute.create(createMaterialUseCase)
+
+  const api = ApiExpress.create([createRoute,loginRoute,listRoute,listByIdRoute,deleteRoute,updateRoute,createMaterialRoute]);
   const port = 8000;
   api.start(port);
 }
