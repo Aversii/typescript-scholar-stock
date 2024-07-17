@@ -35,8 +35,6 @@ export class CreateMaterialRoute implements Route {
           token
         };
 
-        console.log("aqquii",input)
-
         const output: CreateMaterialResponseDTO =
           await this.createMaterialService.execute(input);
 

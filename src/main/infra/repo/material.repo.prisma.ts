@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Material } from "../../domain/entities/material";
 import { MaterialGateway } from "../../domain/gateway/materialGateway";
+import { NotFound_IdNotFound } from "../../error/customError";
 
 export class MaterialRepositoryPrisma implements MaterialGateway {
     private constructor(private readonly prismaClient: PrismaClient) {}
@@ -36,5 +37,33 @@ export class MaterialRepositoryPrisma implements MaterialGateway {
           return material;
         });
         return materialList;
+      }
+
+      public async listById(id: string): Promise<Material> {
+        const material = await this.prismaClient.material.findUnique({
+          where: { id: id },
+        });
+    
+        if (!material) {
+          throw new NotFound_IdNotFound();
+        }
+    
+        return Material.with({
+          id: material.id,
+          name: material.name,
+          quantity: material.quantity,
+          unitMeasurement: material.unitMeasurement,
+          authorId:material.unitMeasurement
+        });
+      }
+
+      public async delete(id: string): Promise<void> {
+        const material = await this.prismaClient.material.findUnique({
+          where: { id: id },
+        });
+    
+        await this.prismaClient.material.delete({
+          where: { id: id },
+        });
       }
 }

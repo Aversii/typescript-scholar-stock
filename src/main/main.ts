@@ -18,6 +18,8 @@ import { MaterialRepositoryPrisma } from "./infra/repo/material.repo.prisma";
 import { CreateMaterialRoute } from "./infra/api/express/routes/material/createMaterial.express.route";
 import { ListMaterialUseCase } from "./application/useCases/material/list";
 import { ListMaterialRoute } from "./infra/api/express/routes/material/listMaterials.express.route";
+import { DeleteMaterialUseCase } from './application/useCases/material/delete';
+import { DeleteMaterialRoute } from './infra/api/express/routes/material/deleteMaterial.express.route';
 
 function main() {
   const repository = UserRepositoryPrisma.create(prismaClient);
@@ -32,6 +34,7 @@ function main() {
 
   const createMaterialUseCase = CreateMaterialUseCase.create(materialRepo);
   const listMaterialUseCase = ListMaterialUseCase.create(materialRepo);
+  const deleteMaterialUseCase = DeleteMaterialUseCase.create(materialRepo)
 
   const createRoute = CreateUserRoute.create(createUserUseCase);
   const listRoute = ListUserRoute.list(listUserUseCase);
@@ -42,6 +45,7 @@ function main() {
 
   const createMaterialRoute = CreateMaterialRoute.create(createMaterialUseCase);
   const listMaterialRoute = ListMaterialRoute.list(listMaterialUseCase);
+  const deleteMaterialRoute = DeleteMaterialRoute.delete(deleteMaterialUseCase)
 
   const api = ApiExpress.create([
     createRoute,
@@ -51,7 +55,8 @@ function main() {
     deleteRoute,
     updateRoute,
     createMaterialRoute,
-    listMaterialRoute
+    listMaterialRoute,
+    deleteMaterialRoute
   ]);
   const port = 8000;
   api.start(port);
