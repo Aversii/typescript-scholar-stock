@@ -1,0 +1,51 @@
+export type MaterialProps = {
+    id: string,
+    name: string,
+    quantity: number,
+    unitMeasurement: string
+}
+
+export class Material {
+    private constructor(private props: MaterialProps) {}
+
+    public static create(name: string, quantity: number, unitMeasurement: string) {
+        return new Material({
+            id: crypto.randomUUID().toString(),
+            name,
+            quantity,
+            unitMeasurement
+        });
+    }
+
+    public static with(props: MaterialProps) {
+        return new Material(props);
+    }
+
+    public getId(): string {
+        return this.props.id;
+    }
+
+    public getName(): string {
+        return this.props.name;
+    }
+
+    public getQuantity(): number {
+        return this.props.quantity;
+    }
+
+    public getUnitMeasurement(): string {
+        return this.props.unitMeasurement;
+    }
+
+    public setName(name: string): void {
+        this.props.name = name;
+    }
+
+    public setQuantity(quantity: number): void {
+        this.props.quantity = quantity;
+    }
+
+    public setUnitMeasurement(unitMeasurement: string): void {
+        this.props.unitMeasurement = unitMeasurement;
+    }
+}
