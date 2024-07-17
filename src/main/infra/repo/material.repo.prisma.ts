@@ -22,4 +22,19 @@ export class MaterialRepositoryPrisma implements MaterialGateway {
         data,
       });
     }
+
+    public async list(): Promise<Material[]> {
+        const materials = await this.prismaClient.material.findMany();
+        const materialList = materials.map((m) => {
+          const material = Material.with({
+            id: m.id,
+            name: m.name,
+            quantity: m.quantity,
+            unitMeasurement: m.unitMeasurement,
+            authorId: m.authorId
+          });
+          return material;
+        });
+        return materialList;
+      }
 }
