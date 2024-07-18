@@ -11,7 +11,6 @@ import { DeleteUserRoute } from "./infra/api/express/routes/user/deleteUser.expr
 import { UpdateUserUseCase } from "./application/useCases/user/update";
 import { UpdateUserRoute } from "./infra/api/express/routes/user/updateUser.express.route";
 import { LoginUserUseCase } from "./application/useCases/user/login";
-import { LoginUserRoute } from "./infra/api/express/routes/user/loginUser.express.route";
 import { UserRepositoryPrisma } from "./infra/repo/user.repo.prisma";
 import { CreateMaterialUseCase } from "./application/useCases/material/create";
 import { MaterialRepositoryPrisma } from "./infra/repo/material.repo.prisma";
@@ -24,6 +23,9 @@ import { UpdateMaterialRoute } from "./infra/api/express/routes/material/updateM
 import { UpdateMaterialUseCase } from "./application/useCases/material/update";
 import { ListByIdMaterialUseCase } from './application/useCases/material/listById';
 import { ListByIdMaterialRoute } from "./infra/api/express/routes/material/listByIdMaterial.express.route";
+import { LoginUserRoute } from "./infra/api/express/routes/user/loginUser.express.route";
+import { ReplenishmentMaterialUseCase } from './application/useCases/material/replenishment';
+import { ListReplenishmentRoute } from "./infra/api/express/routes/material/listReplenishment.express.route";
 
 function main() {
   const repository = UserRepositoryPrisma.create(prismaClient);
@@ -41,6 +43,7 @@ function main() {
   const deleteMaterialUseCase = DeleteMaterialUseCase.create(materialRepo)
   const updateMaterialUseCase = UpdateMaterialUseCase.create(materialRepo)
   const listByIdMaterialUseCase = ListByIdMaterialUseCase.create(materialRepo)
+  const replenishmentMaterialUseCase = ReplenishmentMaterialUseCase.create(materialRepo)
 
   const createRoute = CreateUserRoute.create(createUserUseCase);
   const listRoute = ListUserRoute.list(listUserUseCase);
@@ -54,6 +57,7 @@ function main() {
   const deleteMaterialRoute = DeleteMaterialRoute.delete(deleteMaterialUseCase)
   const updateMaterialRoute = UpdateMaterialRoute.update(updateMaterialUseCase)
   const listByIdMaterialRoute = ListByIdMaterialRoute.listById(listByIdMaterialUseCase)
+  const listReplenishmentRoute = ListReplenishmentRoute.ListReplenishment(replenishmentMaterialUseCase)
 
   const api = ApiExpress.create([
     createRoute,
@@ -66,7 +70,8 @@ function main() {
     listMaterialRoute,
     deleteMaterialRoute,
     updateMaterialRoute,
-    listByIdMaterialRoute
+    listByIdMaterialRoute,
+    listReplenishmentRoute
   ]);
   const port = 8000;
   api.start(port);

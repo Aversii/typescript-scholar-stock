@@ -24,20 +24,20 @@ export class MaterialRepositoryPrisma implements MaterialGateway {
       });
     }
 
-    public async list(): Promise<Material[]> {
-        const materials = await this.prismaClient.material.findMany();
-        const materialList = materials.map((m) => {
-          const material = Material.with({
-            id: m.id,
-            name: m.name,
-            quantity: m.quantity,
-            unitMeasurement: m.unitMeasurement,
-            authorId: m.authorId
+      public async list(): Promise<Material[]> {
+          const materials = await this.prismaClient.material.findMany();
+          const materialList = materials.map((m) => {
+            const material = Material.with({
+              id: m.id,
+              name: m.name,
+              quantity: m.quantity,
+              unitMeasurement: m.unitMeasurement,
+              authorId: m.authorId
+            });
+            return material;
           });
-          return material;
-        });
-        return materialList;
-      }
+          return materialList;
+        }
 
       public async listById(id: string): Promise<Material> {
         const material = await this.prismaClient.material.findUnique({
@@ -87,4 +87,26 @@ export class MaterialRepositoryPrisma implements MaterialGateway {
           },
         });
       }
+
+      public async listByLowest(): Promise<Material[]> {
+        const materials = await this.prismaClient.material.findMany({
+          where: {
+            quantity: {
+              lt: 2,
+            },
+          },
+        });
+        const materialList = materials.map((m) => {
+          const material = Material.with({
+            id: m.id,
+            name: m.name,
+            quantity: m.quantity,
+            unitMeasurement: m.unitMeasurement,
+            authorId: m.authorId
+          });
+          return material;
+        });
+        return materialList;
+      }
+
 }
