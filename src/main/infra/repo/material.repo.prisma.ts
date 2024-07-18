@@ -66,4 +66,25 @@ export class MaterialRepositoryPrisma implements MaterialGateway {
           where: { id: id },
         });
       }
+
+      public async update(updatedData: {
+        id: string;
+        name?: string;
+        quantity?: number;
+        unitMeasurement?: string;
+      }): Promise<void> {
+        const material = await this.prismaClient.material.findUnique({
+          where: { id: updatedData.id },
+        });
+    
+    
+        const updatedMaterial = await this.prismaClient.material.update({
+          where: { id: updatedData.id },
+          data: {
+            name: updatedData.name || material?.name,
+            quantity: updatedData.quantity || material?.quantity,
+            unitMeasurement: updatedData.unitMeasurement || material?.unitMeasurement,
+          },
+        });
+      }
 }
