@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "dev": "ts-node src/main/main.ts"
+    "dev": "ts-node src/main/main.ts",
+    "vercel-build":"npx prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
