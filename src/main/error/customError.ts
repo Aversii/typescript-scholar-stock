@@ -40,6 +40,32 @@ export class InvalidRequest_InvalidToken extends CustomError{
     };;
 }
 
+export class InvalidRequest_LowQuantity extends CustomError{ 
+    constructor(){
+        super(422,"Quantity cant be negative.");
+    };;
+}
+
+export class InvalidRequest_InvalidTextType extends CustomError{ 
+    constructor(){
+        super(422,"This data must be a string.");
+    };;
+}
+
+export class InvalidRequest_InvalidNumberType extends CustomError{ 
+    constructor(){
+        super(422,"This data must be a number positive.");
+    };;
+}
+
+
+export class InvalidRequest_LongPassword extends CustomError{ 
+    constructor(){
+        super(422,"Password must be lower than 30 characters.");
+    };;
+}
+
+
 
 
 export class NotFound_IdNotFound extends CustomError{ 
