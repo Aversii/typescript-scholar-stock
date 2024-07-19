@@ -3,13 +3,16 @@
     "builds": [
         {
             "src": "src/main/main.ts",
-            "use": "@vercel/node"
+            "use": "@vercel/node",
+            "config": {
+                "installCommand": "npm install && npx prisma generate"
+            }
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/src/main/main.ts"
+            "dest": "src/main/main.ts"
         }
     ]
 }

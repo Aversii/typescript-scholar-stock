@@ -31,8 +31,8 @@ export class UserValidator {
         if (!password || password.length < 6) {
             throw new InvalidRequest_ShortPassword()
         }
-        if(password.length>30){
+/*         if(password.length>30){
             throw new InvalidRequest_LongPassword()
-        }
+        } */
     }
 }
