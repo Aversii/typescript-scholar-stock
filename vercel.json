@@ -1,15 +1,15 @@
 {
-    "version":2,
-    "builds":[
+    "version": 2,
+    "builds": [
         {
             "src": "src/main/main.ts",
             "use": "@vercel/node"
         }
     ],
-    "routes":[
+    "routes": [
         {
-            "src": "(.*)",
-            "dest": "src/main/main.ts"
+            "src": "/(.*)",
+            "dest": "/src/main/main.ts"
         }
     ]
 }
