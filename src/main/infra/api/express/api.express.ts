@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import cors from "cors";
 import { Api } from "../api";
 import { Route } from "./route";
 
@@ -7,6 +8,14 @@ export class ApiExpress implements Api {
 
   private constructor(routes: Route[]) {
     this.app = express();
+
+    // Configuração CORS
+    this.app.use(cors({
+      origin: '*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    }));
+
     this.app.use(express.json());
     this.addRoutes(routes);
   }
@@ -27,7 +36,7 @@ export class ApiExpress implements Api {
 
   public start(port: number) {
     this.app.listen(port, () => {
-      console.log(`server running on port ${port}`);
+      console.log(`Server running on port ${port}`);
       this.listRoutes();
     });
   }
