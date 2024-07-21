@@ -29,7 +29,7 @@ export class ListReplenishmentRoute implements Route {
 
         const output = await this.listReplenishmentService.execute({token});  
         const responseBody = this.present(output);
-        response.status(200).json(responseBody).send();        
+        response.status(200).json(responseBody);        
       } catch (error) {
         if (error instanceof CustomError) {
           response.status(error.statusCode).json({ "Error": error.message });

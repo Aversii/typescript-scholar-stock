@@ -29,7 +29,7 @@ export class ListMaterialRoute implements Route {
 
         const output = await this.listMaterialService.execute({token});  
         const responseBody = this.present(output);
-        response.status(200).json(responseBody).send();        
+        response.status(200).json(responseBody);        
       } catch (error) {
         if (error instanceof CustomError) {
           response.status(error.statusCode).json({ "Error": error.message });

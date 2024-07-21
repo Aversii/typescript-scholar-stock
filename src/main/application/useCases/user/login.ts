@@ -1,4 +1,5 @@
 import { UserGateway } from "../../../domain/gateway/userGateway";
+import { UserValidator } from "../../../domain/validations/userValidations";
 import { Unauthorized_PasswordMismatch } from "../../../error/customError";
 import hashManager from "../../../infra/service/hashManager/hashManager";
 import Authenticator from "../../../infra/service/jwtAuth/authenticator";
@@ -22,6 +23,8 @@ export class LoginUserUseCase implements UseCase<LoginUserInputDto, LoginUserOut
   }
 
   public async execute(input: LoginUserInputDto): Promise<LoginUserOutputDto> {
+    UserValidator.validateEmail(input.email)
+    UserValidator.validatePassword(input.password)
 
     const user = await this.userGateway.login(input.email, input.password);
     if(user){
@@ -33,7 +36,8 @@ export class LoginUserUseCase implements UseCase<LoginUserInputDto, LoginUserOut
       const output = this.presentOutput("User Has Login", token);
       return output;
     }else{
-      throw new Error("User not found");    }
+      throw new Error("User not found");    
+    }
 
 
   }

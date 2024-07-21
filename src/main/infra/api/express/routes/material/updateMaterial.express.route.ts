@@ -15,7 +15,7 @@ export class UpdateMaterialRoute implements Route {
   ) {}
 
   public static update(updateMaterialService: UpdateMaterialUseCase) {
-    return new UpdateMaterialRoute("/material/:id", HttpMethod.PATCH, updateMaterialService);
+    return new UpdateMaterialRoute("/materials/:id", HttpMethod.PATCH, updateMaterialService);
   }
 
   public getHandler() {
