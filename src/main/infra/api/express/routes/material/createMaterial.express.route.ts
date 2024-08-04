@@ -16,7 +16,7 @@ export class CreateMaterialRoute implements Route {
   ) {}
 
   public static create(createMaterialService: CreateMaterialUseCase) {
-    return new CreateMaterialRoute("/material/create", HttpMethod.POST, createMaterialService);
+    return new CreateMaterialRoute("/materials/create", HttpMethod.POST, createMaterialService);
   }
 
   public getHandler() {

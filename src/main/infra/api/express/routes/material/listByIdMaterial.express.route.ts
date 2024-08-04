@@ -21,7 +21,7 @@ export class ListByIdMaterialRoute implements Route {
 
   public static listById(getMaterialByIdService: ListByIdMaterialUseCase) {
     return new ListByIdMaterialRoute(
-      "/material/:id",
+      "/materials/:id",
       HttpMethod.GET,
       getMaterialByIdService
     );

@@ -16,7 +16,7 @@ export class ListReplenishmentRoute implements Route {
 
   public static ListReplenishment(listReplenishmentService: ReplenishmentMaterialUseCase) {
     return new ListReplenishmentRoute(
-      "/replenishment",
+      "/materials/replenishment",
       HttpMethod.GET,
       listReplenishmentService
     );
