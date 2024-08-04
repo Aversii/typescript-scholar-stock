@@ -16,7 +16,7 @@ export class ListReplenishmentRoute implements Route {
 
   public static ListReplenishment(listReplenishmentService: ReplenishmentMaterialUseCase) {
     return new ListReplenishmentRoute(
-      "/materials/replenishment",
+      "/replenishment",
       HttpMethod.GET,
       listReplenishmentService
     );
@@ -26,6 +26,7 @@ export class ListReplenishmentRoute implements Route {
     return async (request: Request, response: Response) => {
       try {
         const token = request.headers.authorization as string
+        console.log("aquiRoute",token)
 
         const output = await this.listReplenishmentService.execute({token});  
         const responseBody = this.present(output);
