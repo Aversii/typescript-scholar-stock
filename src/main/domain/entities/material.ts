@@ -1,3 +1,5 @@
+import { MaterialValidations } from "../validations/materialValidations";
+
 export type MaterialProps = {
     id: string,
     name: string,
@@ -11,6 +13,11 @@ export class Material {
     private constructor(private props: MaterialProps) {}
 
     public static create(name: string, quantity: number, unitMeasurement: string,authorId:string) {
+
+        MaterialValidations.validateName(name);
+        MaterialValidations.validateQuantity(quantity);
+        MaterialValidations.validateUnitMeasurement(unitMeasurement);
+        MaterialValidations.validateAuthorId(authorId);
         return new Material({
             id: crypto.randomUUID().toString(),
             name,

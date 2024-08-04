@@ -1,4 +1,5 @@
 import { MaterialGateway } from "../../../domain/gateway/materialGateway";
+import { MaterialValidations } from "../../../domain/validations/materialValidations";
 import authenticator from "../../../infra/service/jwtAuth/authenticator";
 import { UseCase } from "../../gateway/useCaseGateway";
 
@@ -25,6 +26,9 @@ export class UpdateMaterialUseCase
 
   public async execute({id,name,quantity,unitMeasurement,token}: UpdateMaterialInputDto): Promise<UpdateMaterialOutputDto> {
     const tokenData = authenticator.getTokenData(token)
+    name && MaterialValidations.validateName(name);
+    quantity && MaterialValidations.validateQuantity(quantity);
+    unitMeasurement && MaterialValidations.validateUnitMeasurement(unitMeasurement);
     await this.materialGateway.listById(id);
     await this.materialGateway.update({ id, name, quantity, unitMeasurement});
 

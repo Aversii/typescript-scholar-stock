@@ -16,6 +16,24 @@ export class InvalidRequest_NameLength extends CustomError{
     };;
 }
 
+export class InvalidRequest_BlankUnitMeasurement extends CustomError{
+    constructor(){
+        super(422,"Unit measurement can't be blank or empty")
+    }
+}
+
+export class InvalidRequest_BlankAuthorId extends CustomError{
+    constructor(){
+        super(422,"Author Id can't be blank or empty")
+    }
+}
+
+export class InvalidRequest_InvalidAuthorIdFormat extends CustomError{
+    constructor(){
+        super(422,"Author ID Invalid")
+    }
+}
+
 export class InvalidRequest_EmailFormat extends CustomError{ 
     constructor(){
         super(422,"Invalid email format.");
